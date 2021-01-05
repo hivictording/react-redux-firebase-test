@@ -1,5 +1,10 @@
 const initState = {};
 
-export default testReducer = (state = initState, action) => {
-  return state;
-};
+function testReducer(state = initState, action) {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}
+
+export default testReducer;

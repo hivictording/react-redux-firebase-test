@@ -4,7 +4,7 @@ import { firestoreReducer } from "redux-firestore";
 
 import testReducer from "./testReducer";
 
-export default rootReducer = combineReducers({
+export default combineReducers({
   test: testReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
