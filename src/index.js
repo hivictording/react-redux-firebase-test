@@ -6,7 +6,9 @@ import { createFirestoreInstance } from "redux-firestore";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { ThemeProvider } from "@material-ui/core";
 
+import theme from "./theme/Theme";
 import App from "./App";
 import "./index.css";
 import firebase from "./config/firebaseConfig";
@@ -32,10 +34,12 @@ const rrfProps = {
 };
 
 ReactDOM.render(
-  <Provider store={reduxStore}>
-    <ReactReduxFirebaseProvider {...rrfProps}>
-      <App />
-    </ReactReduxFirebaseProvider>
-  </Provider>,
+  <ThemeProvider theme={theme}>
+    <Provider store={reduxStore}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
+    </Provider>
+  </ThemeProvider>,
   document.getElementById("root")
 );
