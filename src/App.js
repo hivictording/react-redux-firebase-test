@@ -4,15 +4,17 @@ import People from "./components/People";
 import Header1 from "./components/Header1";
 import Header2 from "./components/Header2";
 import Grid2 from "./components/muiTest/Grid2";
+import FixedHeader from "./components/FixedHeader";
 
 function App() {
   return (
     <>
-      <Grid2 />
-      {/* <Header color="skyblue" />
-      <Header1 />
-      <Header2 />
-      <People /> */}
+      <FixedHeader />
+      {/* <Header color="skyblue" /> */}
+      {/* <Header1 />
+      <Grid2 /> */}
+      {/* <Header2 /> */}
+      <People />
     </>
   );
 }

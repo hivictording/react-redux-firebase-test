@@ -1,9 +1,16 @@
 import React from "react";
-import { makeStyles, Grid, Paper, Chip } from "@material-ui/core";
+import {
+  makeStyles,
+  Grid,
+  Paper,
+  Chip,
+  Hidden,
+  Typography,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   test: {
-    height: "200px",
+    // height: "50px",
     background: "lightgray",
   },
 });
@@ -13,8 +20,10 @@ const Item = (props) => <Grid item {...props} />;
 
 function Grid2() {
   const classes = useStyles();
+
+  console.log(new Array(3).fill(null).map((item, index) => index));
   return (
-    <Container spacing={2}>
+    <Container spacing={4}>
       <Item xs={12} md={3}>
         <Container direction="column" spacing={2}>
           <Item>
@@ -30,7 +39,11 @@ function Grid2() {
       <Item xs={12} md={3}>
         <Container direction="column" spacing={2}>
           <Item>
-            <Paper>Item 3</Paper>
+            <Paper>
+              <Typography variant="h5" color="error">
+                Item 3
+              </Typography>
+            </Paper>
           </Item>
           <Item>
             <Paper>Item 4</Paper>
@@ -55,16 +68,18 @@ function Grid2() {
         </Item>
         {/* </Container> */}
       </Item>
-      <Item xs={12} md={3}>
-        <Container direction="column" spacing={2}>
-          <Item>
-            <Paper>Item 7</Paper>
-          </Item>
-          <Item>
-            <Paper>Item 8</Paper>
-          </Item>
-        </Container>
-      </Item>
+      <Hidden smDown>
+        <Item md={3}>
+          <Container direction="column" spacing={2}>
+            <Item>
+              <Paper>Item 7</Paper>
+            </Item>
+            <Item>
+              <Paper>Item 8</Paper>
+            </Item>
+          </Container>
+        </Item>
+      </Hidden>
     </Container>
   );
 }

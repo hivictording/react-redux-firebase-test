@@ -7,7 +7,7 @@ const useHeaderStyles = makeStyles((theme) => {
   return {
     header: {
       textAlign: "center",
-      color: theme.palette.primary.main,
+      color: theme.palette.primary.dark,
       [theme.breakpoints.down("xs")]: {
         background: (props) => props.color,
       },
