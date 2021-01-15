@@ -9,48 +9,29 @@ import {
   Button,
   Menu,
   MenuItem,
-  Fade,
   Zoom,
-  Slide,
 } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
 
+import menus from "./menus";
 import logo from "../assets/sonicwall.svg";
 
-const menus = [
+const companyOptions = [
   {
-    pathname: "/",
-    description: "Home",
+    pathname: "/company",
+    description: "Company",
   },
   {
-    pathname: "/products",
-    description: "Products",
-    subMenus: [
-      {
-        pathname: "/nsa",
-        description: "NSA Products",
-      },
-      {
-        pathname: "/tz",
-        description: "TZ Products",
-      },
-      {
-        pathname: "/sm",
-        description: "SuperMassive Products",
-      },
-    ],
+    pathname: "/news",
+    description: "News",
   },
   {
-    pathname: "/solutions",
-    description: "Solutions",
+    pathname: "/press",
+    description: "Press",
   },
   {
-    pathname: "/partners",
-    description: "Partners",
-  },
-  {
-    pathname: "/support",
-    description: "Support",
+    pathname: "/careers",
+    description: "Careers",
   },
 ];
 
@@ -97,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  menuItemSelected: {
+    opacity: 1,
+    backgroundColor: theme.palette.primary.dark,
+  },
   menu: {
     background: theme.palette.primary.main,
   },
@@ -111,17 +96,39 @@ function FixedHeader() {
 
   const classes = useStyles();
 
-  const index = menus.findIndex((menu) => menu.pathname === location.pathname);
-  const currentTab = index !== -1 ? index : 0;
+  let currentTab = 0,
+    currentSubMenu = 0;
+
+  for (const menu of menus) {
+    if (menu.pathname === location.pathname) {
+      currentTab = menus.findIndex((m) => m.pathname === menu.pathname);
+      break;
+    }
+    for (const subMenu of menu.subMenus) {
+      if (subMenu.pathname === location.pathname) {
+        currentTab = menus.findIndex((m) => m.pathname === menu.pathname);
+        currentSubMenu = menu.subMenus.findIndex(
+          (s) => s.pathname === subMenu.pathname
+        );
+        break;
+      }
+    }
+  }
 
   const [tab, setTab] = React.useState(currentTab);
   const [anchor, setAnchor] = React.useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(currentSubMenu);
 
   const handleOpenMenu = (event) => {
     setAnchor(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
+    setAnchor(null);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
     setAnchor(null);
   };
 
@@ -159,28 +166,70 @@ function FixedHeader() {
               root: classes.tabs,
             }}
           >
-            {menus.map((menu) => (
-              <Tab
-                key={menu.pathname}
-                label={menu.description}
-                component={Link}
-                to={menu.pathname}
-                // className={classes.tab}
-                classes={{
-                  root: classes.tab,
-                }}
-              />
-            ))}
-            <Tab
-              label="Company"
-              component={Link}
-              to="/company"
-              classes={{
-                root: classes.tab,
+            {menus.map((menu) =>
+              menu.pathname === "/company" ? (
+                <Tab
+                  key={menu.pathname}
+                  label={menu.description}
+                  component={Link}
+                  to={menu.pathname}
+                  // className={classes.tab}
+                  classes={{
+                    root: classes.tab,
+                  }}
+                  onMouseOver={(event) => handleOpenMenu(event)}
+                />
+              ) : (
+                <Tab
+                  key={menu.pathname}
+                  label={menu.description}
+                  component={Link}
+                  to={menu.pathname}
+                  // className={classes.tab}
+                  classes={{
+                    root: classes.tab,
+                  }}
+                />
+              )
+            )}
+
+            <Menu
+              anchorEl={anchor}
+              open={Boolean(anchor)}
+              onClose={handleCloseMenu}
+              // keepMounted
+              MenuListProps={{
+                onMouseLeave: handleCloseMenu,
+                // className: classes.menuItem,
               }}
-              onMouseOver={(event) => handleOpenMenu(event)}
-            />
+              elevation={0}
+              TransitionComponent={Zoom}
+              classes={{
+                // list: classes.menuItem,
+                paper: classes.menu,
+              }}
+            >
+              {companyOptions.map((option, index) => (
+                <MenuItem
+                  key={option.pathname}
+                  onClick={(event) => {
+                    handleMenuItemClick(event, index);
+                    setTab(5);
+                  }}
+                  selected={selectedIndex === index}
+                  component={Link}
+                  to={option.pathname}
+                  classes={{
+                    root: classes.menuItem,
+                    selected: classes.menuItemSelected,
+                  }}
+                >
+                  {option.description}
+                </MenuItem>
+              ))}
+            </Menu>
           </Tabs>
+
           <Button
             variant="contained"
             color="secondary"
@@ -188,77 +237,6 @@ function FixedHeader() {
           >
             Contact Sales
           </Button>
-
-          <Menu
-            anchorEl={anchor}
-            open={Boolean(anchor)}
-            onClose={handleCloseMenu}
-            keepMounted
-            MenuListProps={{
-              onMouseLeave: handleCloseMenu,
-              // className: classes.menuItem,
-            }}
-            elevation={0}
-            TransitionComponent={Zoom}
-            timeout={5000}
-            classes={{
-              // list: classes.menuItem,
-              paper: classes.menu,
-            }}
-          >
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                setTab(5);
-              }}
-              component={Link}
-              to="/company"
-              classes={{
-                root: classes.menuItem,
-              }}
-            >
-              Company
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                setTab(5);
-              }}
-              component={Link}
-              to="/news"
-              classes={{
-                root: classes.menuItem,
-              }}
-            >
-              News
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                setTab(5);
-              }}
-              component={Link}
-              to="/press"
-              classes={{
-                root: classes.menuItem,
-              }}
-            >
-              Press
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                setTab(5);
-              }}
-              component={Link}
-              to="/careers"
-              classes={{
-                root: classes.menuItem,
-              }}
-            >
-              Careers
-            </MenuItem>
-          </Menu>
         </Toolbar>
       </AppBar>
       <div className={classes.fixedHeaderFix} />
