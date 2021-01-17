@@ -78,6 +78,11 @@ const useStyles = makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  // menuItemSelected: {
+  //   "& .Mui-selected": {
+  //     opacity: 1,
+  //   },
+  // },
   menuItemSelected: {
     opacity: 1,
     backgroundColor: theme.palette.primary.dark,
@@ -134,6 +139,7 @@ function FixedHeader() {
 
   const handleTabChange = (event, value) => {
     setTab(value);
+    setSelectedIndex(null);
   };
 
   return (
@@ -170,6 +176,8 @@ function FixedHeader() {
               menu.pathname === "/company" ? (
                 <Tab
                   key={menu.pathname}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
                   label={menu.description}
                   component={Link}
                   to={menu.pathname}
@@ -194,6 +202,7 @@ function FixedHeader() {
             )}
 
             <Menu
+              id="simple-menu"
               anchorEl={anchor}
               open={Boolean(anchor)}
               onClose={handleCloseMenu}
@@ -205,7 +214,7 @@ function FixedHeader() {
               elevation={0}
               TransitionComponent={Zoom}
               classes={{
-                // list: classes.menuItem,
+                // list: classes.menuItemSelected,
                 paper: classes.menu,
               }}
             >
